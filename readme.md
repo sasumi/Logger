@@ -10,10 +10,10 @@
 
 ```php
 <?php
-use lfphp\Logger\LoggerLevel;
-use lfphp\Logger\Output\ConsoleOutput;
-use lfphp\Logger\Output\FileOutput;
-use lfphp\Logger\Logger;
+use LFPhp\Logger\LoggerLevel;
+use LFPhp\Logger\Output\ConsoleOutput;
+use LFPhp\Logger\Output\FileOutput;
+use LFPhp\Logger\Logger;
 
 require_once "autoload.php";
 

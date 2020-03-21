@@ -1,6 +1,6 @@
 <?php
 
-namespace lfphp\Logger\Output;
+namespace LFPhp\Logger\Output;
 
 abstract class CommonAbstract {
 	public static function printTraceInfo($trace_info, $as_return = false){

@@ -1,6 +1,6 @@
 <?php
 
-namespace lfphp\Logger;
+namespace LFPhp\Logger;
 class LoggerException extends \Exception {
 
 }

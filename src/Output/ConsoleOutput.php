@@ -1,8 +1,7 @@
 <?php
+namespace LFPhp\Logger\Output;
 
-namespace lfphp\Logger\Output;
-
-use lfphp\Logger\Logger;
+use LFPhp\Logger\Logger;
 
 class ConsoleOutput extends CommonAbstract {
 	public function output($messages, $level, $logger_logger_id, $trace_info = null){

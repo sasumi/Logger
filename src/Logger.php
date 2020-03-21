@@ -1,7 +1,7 @@
 <?php
 
-namespace lfphp\Logger;
-use function lfphp\var_export_min;
+namespace LFPhp\Logger;
+use function LFPhp\var_export_min;
 
 /**
  * Class Logger
@@ -40,7 +40,7 @@ class Logger {
 	/**
 	 * get instance
 	 * @param string|null $id
-	 * @return \lfphp\Logger\Logger
+	 * @return \LFPhp\Logger\Logger
 	 */
 	public static function instance($id = ''){
 		$id = $id ?: self::DEFAULT_ID;

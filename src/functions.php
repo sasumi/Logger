@@ -1,6 +1,6 @@
 <?php
 
-namespace lfphp;
+namespace LFPhp;
 
 /**
  * var_export in minimal format

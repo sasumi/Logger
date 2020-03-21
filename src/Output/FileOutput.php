@@ -1,8 +1,8 @@
 <?php
 
-namespace lfphp\Logger\Output;
+namespace LFPhp\Logger\Output;
 
-use lfphp\Logger\Logger;
+use LFPhp\Logger\Logger;
 
 class FileOutput extends CommonAbstract {
 	private $file;
@@ -11,7 +11,7 @@ class FileOutput extends CommonAbstract {
 
 	/**
 	 * @param null $log_file
-	 * @return \lfphp\Logger\Logger|void
+	 * @return \LFPhp\Logger\Logger|void
 	 */
 	public function __construct($log_file = null){
 		$log_file = $log_file ?: sys_get_temp_dir().'/logger.'.date('Ymd').'.log';
@@ -21,7 +21,7 @@ class FileOutput extends CommonAbstract {
 	/**
 	 * set log file
 	 * @param string $log_file log file path
-	 * @return \lfphp\Logger\Output\FileOutput
+	 * @return \LFPhp\Logger\Output\FileOutput
 	 */
 	public function setFile($log_file){
 		if(is_callable($log_file)){
