@@ -1,5 +1,5 @@
 <?php
-namespace FSLogger\Logger;
+namespace lfphp\Logger;
 include_once __DIR__.'/src/functions.php';
 spl_autoload_register(function($class){
 	if(strpos($class, __NAMESPACE__) === 0){

@@ -1,9 +1,9 @@
 <?php
 
-use FSLogger\Logger\LoggerLevel;
-use FSLogger\Logger\Output\ConsoleOutput;
-use FSLogger\Logger\Output\FileOutput;
-use FSLogger\Logger\Logger;
+use lfphp\Logger\LoggerLevel;
+use lfphp\Logger\Output\ConsoleOutput;
+use lfphp\Logger\Output\FileOutput;
+use lfphp\Logger\Logger;
 
 include dirname(__DIR__).'/autoload.php';
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace FSLogger\Logger;
+namespace lfphp\Logger;
 class LoggerLevel {
 	const EMERGENCY = 'emergency';
 	const ALERT = 'alert';

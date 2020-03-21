@@ -1,5 +1,5 @@
 {
-	"name": "Lite/Logger",
+	"name": "lfphp/Logger",
 	"description": "A lite logger for PHP. make log easier to use.",
 	"keywords": ["log", "logger", "lite"],
 	"homepage": "http://blog.yikepi.com/",

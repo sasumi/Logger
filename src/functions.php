@@ -1,6 +1,6 @@
 <?php
 
-namespace FSLogger;
+namespace lfphp;
 
 /**
  * var_export in minimal format
