@@ -1,0 +1,26 @@
+{
+	"name": "Lite/Logger",
+	"description": "A lite logger for PHP. make log easier to use.",
+	"keywords": ["log", "logger", "lite"],
+	"homepage": "http://blog.yikepi.com/",
+	"type": "library",
+	"license": "Apache-2.0",
+	"authors": [
+		{
+			"name": "Sasumi.H",
+			"email": "cnsasumi@outlook.com",
+			"homepage": "http://blog.yikepi.com/"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/sasumi/Logger/issues"
+	},
+	"require": {
+		"php": ">=5.6",
+		"ext-mbstring": "*"
+	},
+	"require-dev": {},
+	"autoload": {
+		"files": ["autoload.php"]
+	}
+}
