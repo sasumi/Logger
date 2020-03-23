@@ -129,7 +129,7 @@ class Logger {
 	 * @param string|null $logger_id
 	 * @param bool $with_trace_info
 	 */
-	public function registerGlobal($handler, $collecting_level = LoggerLevel::INFO, $logger_id = null, $with_trace_info = false){
+	public static function registerGlobal($handler, $collecting_level = LoggerLevel::INFO, $logger_id = null, $with_trace_info = false){
 		self::$handlers[] = [$handler, $collecting_level, $logger_id, $with_trace_info];
 	}
 
