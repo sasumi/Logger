@@ -1,33 +1,34 @@
 <?php
 
 namespace LFPhp\Logger;
+
 /**
  * Class LoggerLevel
  * defined referred to PSR-3
  * @package LFPhp\Logger
  */
 class LoggerLevel {
-	const EMERGENCY = 'emergency';
-	const ALERT = 'alert';
-	const CRITICAL = 'critical';
-	const ERROR = 'error';
-	const WARNING = 'warning';
-	const NOTICE = 'notice';
-	const INFO = 'info';
 	const DEBUG = 'debug';
+	const INFO = 'info';
+	const NOTICE = 'notice';
+	const WARNING = 'warning';
+	const ERROR = 'error';
+	const CRITICAL = 'critical';
+	const ALERT = 'alert';
+	const EMERGENCY = 'emergency';
 
 	/**
 	 * log level error level order by severity
 	 */
 	const SEVERITY_ORDER = [
-		self::EMERGENCY,
-		self::ALERT,
-		self::CRITICAL,
-		self::ERROR,
-		self::WARNING,
-		self::NOTICE,
-		self::INFO,
 		self::DEBUG,
+		self::INFO,
+		self::NOTICE,
+		self::WARNING,
+		self::ERROR,
+		self::CRITICAL,
+		self::ALERT,
+		self::EMERGENCY,
 	];
 
 	/**
@@ -62,11 +63,11 @@ class LoggerLevel {
 	 * -1 if lv1 less serious than lv2
 	 */
 	public static function levelCompare($lv1, $lv2){
-		$lv1_idx = self::SEVERITY_ORDER[$lv1];
-		$lv2_idx = self::SEVERITY_ORDER[$lv2];
+		$lv1_idx = array_search($lv1,self::SEVERITY_ORDER);
+		$lv2_idx = array_search($lv2, self::SEVERITY_ORDER);
 		if($lv1_idx === $lv2_idx){
 			return 0;
 		}
-		return $lv1_idx > $lv2_idx ? -1 : 1;
+		return $lv1_idx > $lv2_idx ? 1 : -1;
 	}
 }
