@@ -14,6 +14,7 @@ use LFPhp\Logger\LoggerLevel;
 use LFPhp\Logger\Output\ConsoleOutput;
 use LFPhp\Logger\Output\FileOutput;
 use LFPhp\Logger\Logger;
+use LFPhp\Logger\test\MyClass;
 
 require_once "autoload.php";
 

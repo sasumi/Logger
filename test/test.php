@@ -1,5 +1,7 @@
 <?php
 
+namespace LFPhp\Logger\test;
+
 use LFPhp\Logger\LoggerLevel;
 use LFPhp\Logger\Output\ConsoleOutput;
 use LFPhp\Logger\Output\FileOutput;
@@ -8,7 +10,7 @@ use LFPhp\Logger\Logger;
 include dirname(__DIR__).'/autoload.php';
 
 //print all log to screen
-Logger::register(new ConsoleOutput, LoggerLevel::DEBUG);
+Logger::register(new ConsoleOutput, LoggerLevel::DEBUG, null, true);
 
 //log only level bigger than INFO to file
 Logger::register(new FileOutput(__DIR__.'/log/debug.log'), LoggerLevel::INFO);
@@ -21,10 +23,10 @@ Logger::registerWhile(LoggerLevel::WARNING, new FileOutput(__DIR__.'/log/Lite.er
 
 //custom processor binding
 Logger::register(function($messages, $level){
-	echo "process man: ", Logger::combineMessages($messages);
+	echo "process man: ", Logger::combineMessages($messages), PHP_EOL;
 }, LoggerLevel::INFO);
 
-
+//Business start ...
 class MyClass {
 	public function foo(){
 		$msg = "I'm calling foo()";
@@ -37,11 +39,11 @@ class MyClass {
 	}
 
 	public function __construct(){
-		Logger::instance(__CLASS__)->debug('class construct called');
+		Logger::instance(__CLASS__)->debug('class construct.');
 	}
 
 	public function __destruct(){
-		Logger::warning('class destruct called');
+		Logger::warning('class destruct.');
 	}
 }
 

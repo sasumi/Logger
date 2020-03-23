@@ -3,8 +3,19 @@
 namespace LFPhp\Logger\Output;
 
 abstract class CommonAbstract {
-	public static function printTraceInfo($trace_info, $as_return = false){
-		$loc = $trace_info['class'].$trace_info['type'].$trace_info['function'].' called at ['.$trace_info['file']."#{$trace_info['line']}]";
+	/**
+	 * print trace info
+	 * @param array $trace_info trace info from debug_backtrace()
+	 * @param bool $with_func output with class or function name
+	 * @param bool $as_return output as return only
+	 * @return string
+	 */
+	public static function printTraceInfo($trace_info, $with_func = false, $as_return = false){
+		$loc = '';
+		if($with_func){
+			$loc .= $trace_info['class'].$trace_info['type'].$trace_info['function'].'() ';
+		}
+		$loc .= $trace_info['file']."#{$trace_info['line']}";
 		if(!$as_return){
 			echo $loc;
 		}
@@ -22,7 +33,7 @@ abstract class CommonAbstract {
 	abstract public function output($messages, $level, $logger_id, $locate_info);
 
 	/**
-	 * call as function
+	 * output called as function
 	 * @param mixed[] $messages
 	 * @param string $level
 	 * @param string $logger_id

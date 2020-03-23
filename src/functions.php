@@ -1,6 +1,6 @@
 <?php
 
-namespace LFPhp;
+namespace LFPhp\Logger;
 
 /**
  * var_export in minimal format

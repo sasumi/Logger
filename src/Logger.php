@@ -1,7 +1,6 @@
 <?php
 
 namespace LFPhp\Logger;
-use function LFPhp\var_export_min;
 
 /**
  * Class Logger
@@ -40,7 +39,7 @@ class Logger {
 	/**
 	 * get instance
 	 * @param string|null $id
-	 * @return \LFPhp\Logger\Logger
+	 * @return self
 	 */
 	public static function instance($id = ''){
 		$id = $id ?: self::DEFAULT_ID;
@@ -147,7 +146,7 @@ class Logger {
 		$trace_info = null;
 
 		foreach(self::$handlers as list($handler, $collecting_level, $logger_id, $with_trace_info)){
-			if((!$logger_id || $logger_id == $this->id) && $level >= $collecting_level){
+			if((!$logger_id || $logger_id == $this->id) && LoggerLevel::levelCompare($level, $collecting_level) >= 0){
 				//required trace info
 				if($with_trace_info && !$trace_info){
 					$tmp = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
@@ -174,10 +173,10 @@ class Logger {
 
 			self::$log_dumps[] = [$messages, $level, $trace_info];
 			foreach(self::$while_handlers as list($trigger_level, $handler, $collecting_level, $logger_id, $with_trace_info)){
-				if((!$logger_id || $logger_id == $this->id) && $level >= $trigger_level){
+				if((!$logger_id || $logger_id == $this->id) && LoggerLevel::levelCompare($level, $trigger_level) >= 0){
 					array_walk(self::$log_dumps, function($data) use ($collecting_level, $handler){
-						if($data[1] >= $collecting_level){
-							list($message, $level, $trace_info) = $data;
+						list($message, $level, $trace_info) = $data;
+						if(LoggerLevel::levelCompare($level, $collecting_level) >= 0){
 							call_user_func($handler, $message, $level, $this->id, $trace_info);
 						}
 					});
