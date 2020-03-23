@@ -10,19 +10,19 @@ use LFPhp\Logger\Logger;
 include dirname(__DIR__).'/autoload.php';
 
 //print all log to screen
-Logger::register(new ConsoleOutput, LoggerLevel::DEBUG, null, true);
+Logger::registerGlobal(new ConsoleOutput, LoggerLevel::DEBUG, null, true);
 
 //log only level bigger than INFO to file
-Logger::register(new FileOutput(__DIR__.'/log/debug.log'), LoggerLevel::INFO);
+Logger::registerGlobal(new FileOutput(__DIR__.'/log/debug.log'), LoggerLevel::INFO);
 
 //log by id(class name)
-Logger::register(new FileOutput(__DIR__.'/log/class.log'), LoggerLevel::DEBUG, MyClass::class);
+Logger::registerGlobal(new FileOutput(__DIR__.'/log/class.log'), LoggerLevel::DEBUG, MyClass::class);
 
 //log on warning happens
-Logger::registerWhile(LoggerLevel::WARNING, new FileOutput(__DIR__.'/log/Lite.error.log'), LoggerLevel::INFO);
+Logger::registerWhileGlobal(LoggerLevel::WARNING, new FileOutput(__DIR__.'/log/Lite.error.log'), LoggerLevel::INFO);
 
 //custom processor binding
-Logger::register(function($messages, $level){
+Logger::registerGlobal(function($messages, $level){
 	echo "process man: ", Logger::combineMessages($messages), PHP_EOL;
 }, LoggerLevel::INFO);
 

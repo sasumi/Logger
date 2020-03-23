@@ -19,19 +19,19 @@ use LFPhp\Logger\test\MyClass;
 require_once "autoload.php";
 
 //打印所有日志信息到控制台（屏幕）
-Logger::register(new ConsoleOutput, LoggerLevel::DEBUG);
+Logger::registerGlobal(new ConsoleOutput, LoggerLevel::DEBUG);
 
 //记录等级大于或等于INFO的信息到文件
-Logger::register(new FileOutput(__DIR__.'/log/Lite.debug.log'), LoggerLevel::INFO);
+Logger::registerGlobal(new FileOutput(__DIR__.'/log/Lite.debug.log'), LoggerLevel::INFO);
 
 //记录注册ID为Curl::class（一般使用类名作为注册ID）的所有日志信息到文件
-Logger::register(new FileOutput(__DIR__.'/log/Lite.curl.log'), LoggerLevel::DEBUG, MyClass::class);
+Logger::registerGlobal(new FileOutput(__DIR__.'/log/Lite.curl.log'), LoggerLevel::DEBUG, MyClass::class);
 
 //仅在发生WARNING级别日志事件时记录所有等级大于或等于INFO的信息到文件
-Logger::registerWhile(LoggerLevel::WARNING, new FileOutput(__DIR__.'/log/Lite.error.log'), LoggerLevel::INFO);
+Logger::registerWhileGlobal(LoggerLevel::WARNING, new FileOutput(__DIR__.'/log/Lite.error.log'), LoggerLevel::INFO);
 
 //自行处理信息
-Logger::register(function($messages, $level){
+Logger::registerGlobal(function($messages, $level){
 	//执行处理逻辑
 }, LoggerLevel::INFO);
 ```

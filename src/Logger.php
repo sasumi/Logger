@@ -22,7 +22,6 @@ class Logger {
 	 * @var array format：[[processor, collecting_level],...]
 	 */
 	private static $handlers = [];
-
 	private static $log_dumps = [];
 	private static $while_handlers = [];
 
@@ -114,14 +113,34 @@ class Logger {
 	}
 
 	/**
-	 * register handler
+	 * register current object handler
+	 * @param $handler
+	 * @param string $collecting_level
+	 * @param bool $with_trace_info
+	 */
+	public function register($handler, $collecting_level = LoggerLevel::INFO, $with_trace_info = false){
+		self::$handlers[] = [$handler, $collecting_level, $this->id, $with_trace_info];
+	}
+
+	/**
+	 * register global handler
 	 * @param callable $handler
 	 * @param string $collecting_level
 	 * @param string|null $logger_id
 	 * @param bool $with_trace_info
 	 */
-	public static function register($handler, $collecting_level = LoggerLevel::INFO, $logger_id = null, $with_trace_info = false){
+	public function registerGlobal($handler, $collecting_level = LoggerLevel::INFO, $logger_id = null, $with_trace_info = false){
 		self::$handlers[] = [$handler, $collecting_level, $logger_id, $with_trace_info];
+	}
+
+	/**
+	 * @param $trigger_level
+	 * @param $handler
+	 * @param string $collecting_level
+	 * @param bool $with_trace_info
+	 */
+	public function registerWhile($trigger_level, $handler, $collecting_level = LoggerLevel::INFO, $with_trace_info = false){
+		self::$while_handlers[] = [$trigger_level, $handler, $collecting_level, $this->id, $with_trace_info];
 	}
 
 	/**
@@ -132,7 +151,7 @@ class Logger {
 	 * @param string|null $logger_id
 	 * @param bool $with_trace_info
 	 */
-	public static function registerWhile($trigger_level, $handler, $collecting_level = LoggerLevel::INFO, $logger_id = null, $with_trace_info = false){
+	public static function registerWhileGlobal($trigger_level, $handler, $collecting_level = LoggerLevel::INFO, $logger_id = null, $with_trace_info = false){
 		self::$while_handlers[] = [$trigger_level, $handler, $collecting_level, $logger_id, $with_trace_info];
 	}
 
