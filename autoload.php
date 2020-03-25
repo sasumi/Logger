@@ -1,6 +1,5 @@
 <?php
 namespace LFPhp\Logger;
-include_once __DIR__.'/src/functions.php';
 spl_autoload_register(function($class){
 	if(strpos($class, __NAMESPACE__) === 0){
 		$f = substr($class, strlen(__NAMESPACE__));

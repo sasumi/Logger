@@ -2,6 +2,8 @@
 
 namespace LFPhp\Logger;
 
+use function LFPhp\Func\var_export_min;
+
 /**
  * Class Logger
  * @package Lite\Logger

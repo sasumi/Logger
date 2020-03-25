@@ -1,0 +1,65 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "d9e5559171ea8614aa4c0694dc4476a3",
+    "packages": [
+        {
+            "name": "lfphp/func",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sasumi/Func.git",
+                "reference": "51bb3ba19696033f2eb5d82c7afd32250cd8d75d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sasumi/Func/zipball/51bb3ba19696033f2eb5d82c7afd32250cd8d75d",
+                "reference": "51bb3ba19696033f2eb5d82c7afd32250cd8d75d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "autoload.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Sasumi.H",
+                    "email": "cnsasumi@outlook.com",
+                    "homepage": "http://blog.yikepi.com/"
+                }
+            ],
+            "description": "A lite function pack for PHP.",
+            "homepage": "http://blog.yikepi.com/",
+            "keywords": [
+                "function"
+            ],
+            "time": "2020-03-25T01:06:50+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.6",
+        "ext-mbstring": "*"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
+}
