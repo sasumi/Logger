@@ -6,6 +6,9 @@ use LFPhp\Logger\Logger;
 use LFPhp\Logger\LoggerLevel;
 use function LFPhp\Func\console_color;
 
+/**
+ * 控制台（命令行模式）输出
+ */
 class ConsoleOutput extends CommonAbstract {
 	public static $level_colors = [
 		LoggerLevel::DEBUG     => ['dark_gray'],
@@ -16,9 +19,9 @@ class ConsoleOutput extends CommonAbstract {
 		LoggerLevel::EMERGENCY => ['cyan'],
 	];
 
-	public function output($messages, $level, $logger_logger_id, $trace_info = null){
+	public function output($messages, $level, $logger_id, $trace_info = null){
 		$lv_str = console_color(strtoupper($level), self::$level_colors[$level][0], self::$level_colors[$level][1]);
-		echo date('H:i:s m/d'), ($trace_info ? '' : ' '.$logger_logger_id).' - ', $lv_str.' - ', Logger::combineMessages($messages);
+		echo date('H:i:s m/d'), ($trace_info ? '' : ' '.$logger_id).' - ', $lv_str.' - ', Logger::combineMessages($messages);
 		if($trace_info){
 			echo ' ';
 			CommonAbstract::printTraceInfo($trace_info);

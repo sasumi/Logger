@@ -18,6 +18,7 @@
 	"require": {
 		"php": ">=5.6",
 		"ext-mbstring": "*",
+		"ext-json": "*",
 		"lfphp/func": "~1.0.0"
 	},
 	"require-dev": {},

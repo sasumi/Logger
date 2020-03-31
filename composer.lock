@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d9e5559171ea8614aa4c0694dc4476a3",
+    "content-hash": "402af63c589d377c2603dad264a76a88",
     "packages": [
         {
             "name": "lfphp/func",
-            "version": "1.0.1",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sasumi/Func.git",
-                "reference": "51bb3ba19696033f2eb5d82c7afd32250cd8d75d"
+                "reference": "8a62b07c11ac518a54dfa685a89e7017319b2880"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sasumi/Func/zipball/51bb3ba19696033f2eb5d82c7afd32250cd8d75d",
-                "reference": "51bb3ba19696033f2eb5d82c7afd32250cd8d75d",
+                "url": "https://api.github.com/repos/sasumi/Func/zipball/8a62b07c11ac518a54dfa685a89e7017319b2880",
+                "reference": "8a62b07c11ac518a54dfa685a89e7017319b2880",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
             "keywords": [
                 "function"
             ],
-            "time": "2020-03-25T01:06:50+00:00"
+            "time": "2020-03-30T09:47:06+00:00"
         }
     ],
     "packages-dev": [],
@@ -58,7 +58,8 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=5.6",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "ext-json": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"
