@@ -116,7 +116,7 @@ class Logger {
 
 	/**
 	 * register current object handler
-	 * @param $handler
+	 * @param callable $handler
 	 * @param string $collecting_level
 	 * @param bool $with_trace_info
 	 */
@@ -128,7 +128,7 @@ class Logger {
 	 * register global handler
 	 * @param callable $handler
 	 * @param string $collecting_level
-	 * @param string|null $logger_id
+	 * @param array|string|null $logger_id specified logger instance id, or id list
 	 * @param bool $with_trace_info
 	 */
 	public static function registerGlobal($handler, $collecting_level = LoggerLevel::INFO, $logger_id = null, $with_trace_info = false){
@@ -136,8 +136,8 @@ class Logger {
 	}
 
 	/**
-	 * @param $trigger_level
-	 * @param $handler
+	 * @param string $trigger_level
+	 * @param callable $handler
 	 * @param string $collecting_level
 	 * @param bool $with_trace_info
 	 */
@@ -147,10 +147,10 @@ class Logger {
 
 	/**
 	 * register while log happens on specified trigger level
-	 * @param $trigger_level
+	 * @param string $trigger_level
 	 * @param callable $handler
 	 * @param string $collecting_level
-	 * @param string|null $logger_id
+	 * @param array|string|null $logger_id specified logger instance id, or id list
 	 * @param bool $with_trace_info
 	 */
 	public static function registerWhileGlobal($trigger_level, $handler, $collecting_level = LoggerLevel::INFO, $logger_id = null, $with_trace_info = false){
@@ -167,7 +167,8 @@ class Logger {
 		$trace_info = null;
 
 		foreach(self::$handlers as list($handler, $collecting_level, $logger_id, $with_trace_info)){
-			if((!$logger_id || $logger_id == $this->id) && LoggerLevel::levelCompare($level, $collecting_level) >= 0){
+			$match_id = !$logger_id || (is_array($logger_id) && in_array($this->id, $logger_id)) || $logger_id === $this->id;
+			if($match_id && LoggerLevel::levelCompare($level, $collecting_level) >= 0){
 				//required trace info
 				if($with_trace_info && !$trace_info){
 					$tmp = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
@@ -194,7 +195,8 @@ class Logger {
 
 			self::$log_dumps[] = [$messages, $level, $trace_info];
 			foreach(self::$while_handlers as list($trigger_level, $handler, $collecting_level, $logger_id, $with_trace_info)){
-				if((!$logger_id || $logger_id == $this->id) && LoggerLevel::levelCompare($level, $trigger_level) >= 0){
+				$match_id = !$logger_id || (is_array($logger_id) && in_array($this->id, $logger_id)) || $logger_id === $this->id;
+				if($match_id && LoggerLevel::levelCompare($level, $trigger_level) >= 0){
 					array_walk(self::$log_dumps, function($data) use ($collecting_level, $handler){
 						list($message, $level, $trace_info) = $data;
 						if(LoggerLevel::levelCompare($level, $collecting_level) >= 0){

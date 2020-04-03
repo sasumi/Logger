@@ -4,9 +4,6 @@ namespace LFPhp\Logger\Output;
 
 use LFPhp\Logger\Logger;
 
-/**
- * 文件保存
- */
 class FileOutput extends CommonAbstract {
 	private $file;
 	private $file_fp;
