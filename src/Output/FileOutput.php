@@ -6,16 +6,33 @@ use LFPhp\Logger\Logger;
 
 class FileOutput extends CommonAbstract {
 	private $file;
+	private $separator_between_context = false;
 	private $file_fp;
 	private $format = '%H:%i:%s %m/%d {id} - {level} - {message}';
 
 	/**
-	 * @param null $log_file
-	 * @return \LFPhp\Logger\Logger|void
+	 * constructor options
+	 * @param string|null $log_file log file name, default using logger tmp file
+	 * @param bool $separator_between_context insert blank line after each context
 	 */
-	public function __construct($log_file = null){
+	public function __construct($log_file = null, $separator_between_context = true){
 		$log_file = $log_file ?: sys_get_temp_dir().'/logger.'.date('Ymd').'.log';
 		$this->setFile($log_file);
+		$this->separator_between_context = $separator_between_context;
+	}
+
+	/**
+	 * insert file separator after context
+	 */
+	public function __destruct(){
+		if($this->separator_between_context){
+			if(!$this->file_fp){
+				$this->file_fp = fopen($this->file, 'a');
+			}
+			fwrite($this->file_fp, PHP_EOL);
+			fclose($this->file_fp);
+			$this->file_fp = null;
+		}
 	}
 
 	/**
