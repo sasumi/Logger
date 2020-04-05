@@ -17,21 +17,17 @@ class FileOutput extends CommonAbstract {
 	 */
 	public function __construct($log_file = null, $separator_between_context = true){
 		$log_file = $log_file ?: sys_get_temp_dir().'/logger.'.date('Ymd').'.log';
-		$this->setFile($log_file);
 		$this->separator_between_context = $separator_between_context;
+		$this->setFile($log_file);
 	}
 
 	/**
 	 * insert file separator after context
 	 */
 	public function __destruct(){
-		if($this->separator_between_context){
-			if(!$this->file_fp){
-				$this->file_fp = fopen($this->file, 'a');
-			}
+		if($this->file_fp && $this->separator_between_context){
 			fwrite($this->file_fp, PHP_EOL);
 			fclose($this->file_fp);
-			$this->file_fp = null;
 		}
 	}
 
