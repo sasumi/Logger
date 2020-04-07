@@ -21,11 +21,11 @@ class Logger {
 
 	/**
 	 * event handler store
-	 * @var array format：[[processor, collecting_level],...]
+	 * @var array format：[[processor, collecting_level, logger_id, with_trace_info, last_occurs_index],...]
 	 */
 	private static $handlers = [];
-	private static $log_dumps = [];
 	private static $while_handlers = [];
+	private static $log_dumps = [];
 
 	private $id;
 
@@ -142,7 +142,7 @@ class Logger {
 	 * @param bool $with_trace_info
 	 */
 	public function registerWhile($trigger_level, $handler, $collecting_level = LoggerLevel::INFO, $with_trace_info = false){
-		self::$while_handlers[] = [$trigger_level, $handler, $collecting_level, $this->id, $with_trace_info];
+		self::$while_handlers[] = [$trigger_level, $handler, $collecting_level, $this->id, $with_trace_info, 0];
 	}
 
 	/**
@@ -154,7 +154,14 @@ class Logger {
 	 * @param bool $with_trace_info
 	 */
 	public static function registerWhileGlobal($trigger_level, $handler, $collecting_level = LoggerLevel::INFO, $logger_id = null, $with_trace_info = false){
-		self::$while_handlers[] = [$trigger_level, $handler, $collecting_level, $logger_id, $with_trace_info];
+		self::$while_handlers[] = [$trigger_level, $handler, $collecting_level, $logger_id, $with_trace_info, 0];
+	}
+
+	/**
+	 * clear log dumps
+	 */
+	public static function clearDump(){
+		self::$log_dumps = [];
 	}
 
 	/**
@@ -166,47 +173,41 @@ class Logger {
 	private function trigger($messages, $level){
 		$trace_info = null;
 
+		//trace信息补全
+		if(in_array(true, array_column(self::$handlers, 3), true) ||
+			in_array(true, array_column(self::$while_handlers, 4), true)){
+			$tmp = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+			$trace_info = $tmp[1];
+		}
+
+		//普通单次绑定事件触发
 		foreach(self::$handlers as list($handler, $collecting_level, $logger_id, $with_trace_info)){
 			$match_id = !$logger_id || (is_array($logger_id) && in_array($this->id, $logger_id)) || $logger_id === $this->id;
 			if($match_id && LoggerLevel::levelCompare($level, $collecting_level) >= 0){
-				//required trace info
-				if($with_trace_info && !$trace_info){
-					$tmp = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-					$trace_info = $tmp[1];
-				}
 				if(call_user_func($handler, $messages, $level, $this->id, $trace_info) === false){
 					return false;
 				}
 			}
 		}
 
-		//trigger while handlers
+		//条件绑定事件触发
 		if(self::$while_handlers){
-			//check required trace info
-			if(!$trace_info){
-				foreach(self::$while_handlers as list($trigger_level, $handler, $collecting_level, $logger_id, $with_trace_info)){
-					if($with_trace_info){
-						$tmp = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-						$trace_info = $tmp[1];
-						break;
-					}
-				}
-			}
-
-			self::$log_dumps[] = [$messages, $level, $trace_info];
-			foreach(self::$while_handlers as list($trigger_level, $handler, $collecting_level, $logger_id, $with_trace_info)){
+			self::$log_dumps[] = [$messages, $level, $trace_info, $this->id];
+			foreach(self::$while_handlers as $k => list($trigger_level, $handler, $collecting_level, $logger_id, $with_trace_info, $last_occurs_index)){
 				$match_id = !$logger_id || (is_array($logger_id) && in_array($this->id, $logger_id)) || $logger_id === $this->id;
 				if($match_id && LoggerLevel::levelCompare($level, $trigger_level) >= 0){
-					array_walk(self::$log_dumps, function($data) use ($collecting_level, $handler){
-						list($message, $level, $trace_info) = $data;
+					$dumps = array_slice(self::$log_dumps, $last_occurs_index);
+					//update last trigger dumping data index
+					self::$while_handlers[$k][5] = $last_occurs_index + count($dumps);
+					array_walk($dumps, function($data) use ($collecting_level, $handler){
+						list($message, $level, $trace_info, $logger_id) = $data;
 						if(LoggerLevel::levelCompare($level, $collecting_level) >= 0){
-							call_user_func($handler, $message, $level, $this->id, $trace_info);
+							call_user_func($handler, $message, $level, $logger_id, $trace_info);
 						}
 					});
 				}
 			}
 		}
-
 		return $this->log($messages, $level);
 	}
 }
