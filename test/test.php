@@ -8,6 +8,7 @@ use LFPhp\Logger\Output\FileOutput;
 use LFPhp\Logger\Logger;
 
 include dirname(__DIR__).'/autoload.php';
+include dirname(__DIR__,3).'/autoload.php';
 
 $vendor_for_test = dirname(__DIR__).'/vendor/autoload.php';
 if(is_file($vendor_for_test)){

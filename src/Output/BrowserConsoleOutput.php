@@ -4,10 +4,9 @@ namespace LFPhp\Logger\Output;
 
 use LFPhp\Logger\Logger;
 use LFPhp\Logger\LoggerLevel;
-use function LFPhp\Func\console_color;
 
 class BrowserConsoleOutput extends CommonAbstract {
-	public static $level_map = [
+	protected static $level_map = [
 		LoggerLevel::DEBUG     => 'debug',
 		LoggerLevel::INFO      => 'info',
 		LoggerLevel::WARNING   => 'warn',

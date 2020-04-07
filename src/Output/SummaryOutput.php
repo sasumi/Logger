@@ -88,12 +88,8 @@ class SummaryOutput extends CommonAbstract {
 		if(!$this->start_time){
 			$this->start_time = time();
 		}
-		$lv_str = strtoupper($level);
-		$str = date('H:i:s m/d').($trace_info ? '' : ' '.$logger_id).' - '.$lv_str.' - '.Logger::combineMessages($messages);
-		if($trace_info){
-			$str .= ' '.CommonAbstract::printTraceInfo($trace_info);
-		}
-		$this->subject = "[$lv_str] ".Logger::combineMessages($messages);
-		file_put_contents($this->tmp_file, $str.PHP_EOL, FILE_APPEND);
+		$text = self::formatAsText($messages, $level, $logger_id, $trace_info);
+		$this->subject = "[".strtoupper($level)."] ".Logger::combineMessages($messages);
+		file_put_contents($this->tmp_file, $text.PHP_EOL, FILE_APPEND);
 	}
 }

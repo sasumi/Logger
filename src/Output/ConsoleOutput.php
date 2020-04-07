@@ -2,14 +2,13 @@
 
 namespace LFPhp\Logger\Output;
 
-use LFPhp\Logger\Logger;
 use LFPhp\Logger\LoggerLevel;
 use function LFPhp\Func\console_color;
 
 class ConsoleOutput extends CommonAbstract {
 	private $colorless = false;
 
-	public static $level_colors = [
+	protected static $level_colors = [
 		LoggerLevel::DEBUG     => ['dark_gray'],
 		LoggerLevel::INFO      => ['white'],
 		LoggerLevel::WARNING   => ['yellow'],
@@ -31,11 +30,6 @@ class ConsoleOutput extends CommonAbstract {
 		if(!$this->colorless){
 			$lv_str = console_color($lv_str, self::$level_colors[$level][0], self::$level_colors[$level][1]);
 		}
-		echo date('H:i:s m/d'), ($trace_info ? '' : ' '.$logger_id).' - ', $lv_str.' - ', Logger::combineMessages($messages);
-		if($trace_info){
-			echo ' ';
-			CommonAbstract::printTraceInfo($trace_info);
-		}
-		echo PHP_EOL;
+		echo self::formatAsText($messages, $lv_str, $logger_id, $trace_info),PHP_EOL;
 	}
 }

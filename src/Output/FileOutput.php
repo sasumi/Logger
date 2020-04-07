@@ -8,7 +8,7 @@ class FileOutput extends CommonAbstract {
 	private $file;
 	private $separator_between_context = false;
 	private $file_fp;
-	private $format = '%H:%i:%s %m/%d {id} - {level} - {message}';
+	private $format = '%H:%i:%s %m/%d {id} [{level}] {message}';
 
 	/**
 	 * constructor options
@@ -28,6 +28,7 @@ class FileOutput extends CommonAbstract {
 		if($this->file_fp && $this->separator_between_context){
 			fwrite($this->file_fp, PHP_EOL);
 			fclose($this->file_fp);
+			$this->file_fp = null;
 		}
 	}
 
@@ -75,7 +76,7 @@ class FileOutput extends CommonAbstract {
 			return date(str_replace('%', '', $matches[1]));
 		}, $str);
 		if(!$this->file_fp){
-			$this->file_fp = fopen($this->file, 'a');
+			$this->file_fp = fopen($this->file, 'a+');
 		}
 		fwrite($this->file_fp, $str.PHP_EOL);
 	}

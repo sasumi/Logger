@@ -2,6 +2,9 @@
 
 namespace LFPhp\Logger\Output;
 
+use LFPhp\Logger\Logger;
+use function LFPhp\Func\console_color;
+
 abstract class CommonAbstract {
 	/**
 	 * print trace info
@@ -23,24 +26,40 @@ abstract class CommonAbstract {
 	}
 
 	/**
+	 * format log message as single line text
+	 * @param $messages
+	 * @param $level
+	 * @param $logger_id
+	 * @param $trace_info
+	 * @return string
+	 */
+	public static function formatAsText($messages, $level, $logger_id, $trace_info){
+		$text = date('H:i:s m/d').($trace_info ? '' : ' '.$logger_id)." [$level] ".Logger::combineMessages($messages);
+		if($trace_info){
+			$text .= ' '.CommonAbstract::printTraceInfo($trace_info, false, true);
+		}
+		return $text;
+	}
+
+	/**
 	 * output handler
 	 * @param mixed[] $messages
 	 * @param string $level
 	 * @param string $logger_id
-	 * @param array $locate_info
+	 * @param array $trace_info
 	 * @return mixed
 	 */
-	abstract public function output($messages, $level, $logger_id, $locate_info);
+		abstract public function output($messages, $level, $logger_id, $trace_info);
 
 	/**
 	 * output called as function
 	 * @param mixed[] $messages
 	 * @param string $level
 	 * @param string $logger_id
-	 * @param array $locate_info
+	 * @param array $trace_info
 	 * @return mixed
 	 */
-	public function __invoke($messages, $level, $logger_id, $locate_info = []){
-		return $this->output($messages, $level, $logger_id, $locate_info);
+	public function __invoke($messages, $level, $logger_id, $trace_info = []){
+		return $this->output($messages, $level, $logger_id, $trace_info);
 	}
 }
