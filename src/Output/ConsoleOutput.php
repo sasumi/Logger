@@ -28,7 +28,7 @@ class ConsoleOutput extends CommonAbstract {
 	public function output($messages, $level, $logger_id, $trace_info = null){
 		$lv_str = strtoupper($level);
 		if(!$this->colorless){
-			$lv_str = console_color($lv_str, self::$level_colors[$level][0], self::$level_colors[$level][1]);
+			$lv_str = console_color($lv_str, self::$level_colors[$level][0], isset(self::$level_colors[$level][1]) ? self::$level_colors[$level][1] : null);
 		}
 		echo self::formatAsText($messages, $lv_str, $logger_id, $trace_info),PHP_EOL;
 	}

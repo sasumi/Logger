@@ -45,7 +45,7 @@ class Logger {
 	public static function instance($id = ''){
 		$id = $id ?: self::DEFAULT_ID;
 		static $instances = [];
-		if(!$instances[$id]){
+		if(!isset($instances[$id])){
 			$instances[$id] = new static($id);
 		}
 		return $instances[$id];

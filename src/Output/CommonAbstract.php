@@ -3,7 +3,6 @@
 namespace LFPhp\Logger\Output;
 
 use LFPhp\Logger\Logger;
-use function LFPhp\Func\console_color;
 
 abstract class CommonAbstract {
 	/**
@@ -27,13 +26,13 @@ abstract class CommonAbstract {
 
 	/**
 	 * format log message as single line text
-	 * @param $messages
-	 * @param $level
-	 * @param $logger_id
-	 * @param $trace_info
+	 * @param array $messages
+	 * @param string $level
+	 * @param string $logger_id
+	 * @param array $trace_info
 	 * @return string
 	 */
-	public static function formatAsText($messages, $level, $logger_id, $trace_info){
+	public static function formatAsText($messages, $level, $logger_id, $trace_info = []){
 		$text = date('H:i:s m/d').($trace_info ? '' : ' '.$logger_id)." [$level] ".Logger::combineMessages($messages);
 		if($trace_info){
 			$text .= ' '.CommonAbstract::printTraceInfo($trace_info, false, true);
@@ -49,7 +48,7 @@ abstract class CommonAbstract {
 	 * @param array $trace_info
 	 * @return mixed
 	 */
-		abstract public function output($messages, $level, $logger_id, $trace_info);
+	abstract public function output($messages, $level, $logger_id, $trace_info);
 
 	/**
 	 * output called as function
