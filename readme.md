@@ -72,7 +72,6 @@ use LFPhp\Logger\Logger;
 use LFPhp\Logger\test\MyClass;
 
 require_once "autoload.php";
-require_once "business.php";
 
 //打印所有日志信息到控制台（屏幕）
 Logger::registerGlobal(new ConsoleOutput, LoggerLevel::DEBUG);
@@ -91,4 +90,7 @@ Logger::registerGlobal(function($messages, $level){
 	var_dump($messages);
 	//执行处理逻辑
 }, LoggerLevel::INFO);
+
+//开始执行正常业务
+require_once "business.php";
 ```
