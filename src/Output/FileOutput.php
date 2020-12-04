@@ -75,6 +75,9 @@ class FileOutput extends CommonAbstract {
 		$str = preg_replace_callback('/(%\w)/', function($matches){
 			return date(str_replace('%', '', $matches[1]));
 		}, $str);
+		if($trace_info){
+			$str .= ' '.$trace_info['file'].'#'.$trace_info['line'];
+		}
 		if(!$this->file_fp){
 			$this->file_fp = fopen($this->file, 'a+');
 		}
