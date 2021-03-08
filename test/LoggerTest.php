@@ -24,6 +24,10 @@ class LoggerTest extends TestCase {
 		Logger::registerWhileGlobal(LoggerLevel::WARNING, new FileOutput($warning_log), LoggerLevel::DEBUG);
 		self::castMyClass();
 
+		$ex = new \Exception('File Not Found.');
+
+		Logger::exception($ex);
+
 		$this->assertFileExists($debug_log);
 		$this->assertFileExists($warning_log);
 	}

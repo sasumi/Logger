@@ -2,6 +2,7 @@
 
 namespace LFPhp\Logger;
 
+use Exception;
 use function LFPhp\Func\var_export_min;
 
 /**
@@ -63,7 +64,7 @@ class Logger {
 
 	/**
 	 * call as function
-	 * @param mixed ...$messages
+	 * @param array ...$messages
 	 * @return mixed
 	 */
 	public function __invoke(...$messages){
@@ -72,39 +73,61 @@ class Logger {
 
 	/**
 	 * call static log method via default logger instance
-	 * @param $level_method
-	 * @param $messages
+	 * @param $method
+	 * @param $params
 	 * @return mixed|null
 	 * @throws \Exception
 	 */
-	public static function __callStatic($level_method, $messages){
-		$level_method = strtoupper($level_method);
-		if(!defined(LoggerLevel::class."::$level_method")){
-			throw new LoggerException("Logger level no exists:".$level_method);
+	public static function __callStatic($method, $params){
+		$method = strtoupper($method);
+		if(!defined(LoggerLevel::class."::$method")){
+			throw new LoggerException("Logger level no exists:".$method);
 		}
-		$level = constant(LoggerLevel::class."::$level_method");
+		$level = constant(LoggerLevel::class."::$method");
 		$ins = self::instance();
-		return $ins->trigger($messages, $level);
+		return $ins->trigger($params, $level);
+	}
+
+	/**
+	 * log exception info
+	 * @param \LFPhp\Logger\Logger $ins
+	 * @param \Exception $exception
+	 * @param string $level log level, default as [error]
+	 */
+	public static function exception(Exception $exception, $level = null, Logger $ins = null){
+		$ins = $ins ? $ins : self::instance();
+		$level = $level ? $level : LoggerLevel::ERROR;
+		$message = "[{$exception->getCode()}] {$exception->getMessage()}".PHP_EOL;
+		$message .= $exception->getFile().'#'.$exception->getLine().PHP_EOL;
+		$message .= $exception->getTraceAsString();
+		$ins->trigger([$message], $level);
 	}
 
 	/**
 	 * call log method
-	 * @param $level_method
-	 * @param $messages
+	 * @param $method
+	 * @param $params
 	 * @return mixed|null
 	 * @throws \Exception
 	 */
-	public function __call($level_method, $messages){
-		$level_method = strtoupper($level_method);
-		if(!defined(LoggerLevel::class."::$level_method")){
-			throw new LoggerException("Logger level no exists:".$level_method);
+	public function __call($method, $params){
+		//call $ins->exception();
+		if($method === 'exception'){
+			list($exception, $level) = $params;
+			return call_user_func('self::exception', $exception, $level, $this);
 		}
-		$level = constant(LoggerLevel::class."::$level_method");
-		return $this->trigger($messages, $level);
+
+		$method = strtoupper($method);
+		if(!defined(LoggerLevel::class."::$method")){
+			throw new LoggerException("Logger level no exists:".$method);
+		}
+		$level = constant(LoggerLevel::class."::$method");
+		return $this->trigger($params, $level);
 	}
 
 	/**
-	 * @param $messages
+	 * combine messages as a string
+	 * @param array $messages
 	 * @return string
 	 */
 	public static function combineMessages($messages){
@@ -136,6 +159,7 @@ class Logger {
 	}
 
 	/**
+	 * register while specified event happens
 	 * @param string $trigger_level
 	 * @param callable $handler
 	 * @param string $collecting_level
@@ -166,7 +190,7 @@ class Logger {
 
 	/**
 	 * trigger log action
-	 * @param $messages
+	 * @param array $messages
 	 * @param $level
 	 * @return mixed
 	 */
