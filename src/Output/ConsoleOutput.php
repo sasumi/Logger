@@ -5,8 +5,11 @@ namespace LFPhp\Logger\Output;
 use LFPhp\Logger\LoggerLevel;
 use function LFPhp\Func\console_color;
 
+/**
+ * 控制台输出
+ */
 class ConsoleOutput extends CommonAbstract {
-	private $colorless = false;
+	private $colorless;
 
 	protected static $level_colors = [
 		LoggerLevel::DEBUG     => ['dark_gray'],
@@ -30,6 +33,6 @@ class ConsoleOutput extends CommonAbstract {
 		if(!$this->colorless){
 			$lv_str = console_color($lv_str, self::$level_colors[$level][0], isset(self::$level_colors[$level][1]) ? self::$level_colors[$level][1] : null);
 		}
-		echo self::formatAsText($messages, $lv_str, $logger_id, $trace_info),PHP_EOL;
+		echo self::formatAsText($messages, $lv_str, $logger_id, $trace_info), PHP_EOL;
 	}
 }
