@@ -4,6 +4,7 @@ namespace LFPhp\Logger\Output;
 
 use LFPhp\Logger\Logger;
 use LFPhp\Logger\LoggerLevel;
+use function LFPhp\Func\escape;
 
 class BrowserConsoleOutput extends CommonAbstract {
 	protected static $level_map = [
@@ -23,22 +24,20 @@ class BrowserConsoleOutput extends CommonAbstract {
 				return;
 			}
 			echo '<script>';
-			$default_id_css = 'color:#666; background-color:#ccc; border-radius:2px; padding:2px 0.5em; text-shadow:1px 1px 1px white; display:inline-block;';
-			$cus_id_css = 'color:#053c19; background-color:#00800036; border-radius:5px; padding:2px 0.5em; text-shadow:1px 1px 1px white; display:inline-block;';
 			foreach($this->logs as list($level, $messages, $logger_id, $trace_info)){
 				$op = self::$level_map[$level];
-				$id_css = $logger_id == Logger::DEFAULT_ID ? $default_id_css : $cus_id_css;
-				$json = ["'%c$logger_id'","'$id_css'"];
+				$id_css = $cus_id_css;
+				$json = [json_encode('%c['.$logger_id.'] '), json_encode('color:#1ca54d; font-weight:bold;')];
 				foreach($messages as $msg){
 					$json[] = json_encode($msg, JSON_UNESCAPED_UNICODE);
 				}
 				if($trace_info){
 					$callee = $trace_info['class'].$trace_info['type'].$trace_info['function'].'()';
 					$loc = $trace_info['file']."({$trace_info['line']})";
-					$json[] = json_encode("$callee");
-					$json[] = json_encode("{$loc}");
+					$json[] = json_encode("\n[Callee] $callee");
+					$json[] = json_encode("\n[Loc] {$loc}");
 				}
-				echo "console.{$op}(".join(',', $json).");", PHP_EOL;
+				echo "console.{$op}(".join(",", $json).");", PHP_EOL;
 			}
 			echo '</script>';
 		});
