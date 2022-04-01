@@ -6,6 +6,7 @@ use LFPhp\Logger\Output\ConsoleOutput;
 use LFPhp\Logger\Output\FileOutput;
 use LFPhp\Logger\Logger;
 use PHPUnit\Framework\TestCase;
+use function LFPhp\Func\dump;
 
 class LoggerTest extends TestCase {
 	public function testNormalLogFile(){
@@ -13,6 +14,19 @@ class LoggerTest extends TestCase {
 		Logger::registerGlobal(new FileOutput($log_file), LoggerLevel::INFO);
 		self::castMyClass();
 		$this->assertFileExists($log_file);
+	}
+
+	public function testLevelCalc(){
+		$lvs = LoggerLevel::levelAboveThan(LoggerLevel::WARNING, true);
+		$this->assertIsArray($lvs);
+
+		$lvs2 = LoggerLevel::levelLowerThan(LoggerLevel::EXCEPTION, true);
+		$this->assertIsArray($lvs2);
+		dump($lvs, $lvs2);
+	}
+
+	public function testLogException(){
+		Logger::registerGlobal(new ConsoleOutput(), LoggerLevel::DEBUG);
 	}
 
 	public function testWhileLogFile(){

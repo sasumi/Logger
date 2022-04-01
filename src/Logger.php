@@ -40,7 +40,7 @@ class Logger {
 
 	/**
 	 * get instance
-	 * @param string|null $id
+	 * @param string $id
 	 * @return self
 	 */
 	public static function instance($id = ''){
@@ -55,7 +55,7 @@ class Logger {
 	/**
 	 * default log for none actions
 	 * @param array $messages
-	 * @param int $level
+	 * @param string $level
 	 * @return mixed|null
 	 */
 	protected function log($messages, $level){
@@ -73,8 +73,8 @@ class Logger {
 
 	/**
 	 * call static log method via default logger instance
-	 * @param $method
-	 * @param $params
+	 * @param string $method
+	 * @param array $params
 	 * @return mixed|null
 	 * @throws \Exception
 	 */
@@ -90,31 +90,28 @@ class Logger {
 
 	/**
 	 * log exception info
-	 * @param \LFPhp\Logger\Logger $ins
+	 * @param Logger $ins
 	 * @param \Exception $exception
-	 * @param string $level log level, default as [error]
 	 */
-	public static function exception(Exception $exception, $level = null, Logger $ins = null){
+	public static function exception(Exception $exception, Logger $ins = null){
 		$ins = $ins ? $ins : self::instance();
-		$level = $level ? $level : LoggerLevel::ERROR;
 		$message = "[{$exception->getCode()}] {$exception->getMessage()}".PHP_EOL;
-		$message .= $exception->getFile().'#'.$exception->getLine().PHP_EOL;
-		$message .= $exception->getTraceAsString();
-		$ins->trigger([$message], $level);
+		$message .= $exception->getFile().'#'.$exception->getLine();
+		$ins->trigger([$message], LoggerLevel::EXCEPTION);
 	}
 
 	/**
 	 * call log method
-	 * @param $method
-	 * @param $params
+	 * @param string $method
+	 * @param array $params
 	 * @return mixed|null
 	 * @throws \Exception
 	 */
 	public function __call($method, $params){
-		//call $ins->exception();
+		//specify handle logic for exception level
 		if($method === 'exception'){
-			list($exception, $level) = $params;
-			return call_user_func('self::exception', $exception, $level, $this);
+			list($exception) = $params;
+			return call_user_func('self::exception', $exception, $this);
 		}
 
 		$method = strtoupper($method);
@@ -191,7 +188,7 @@ class Logger {
 	/**
 	 * trigger log action
 	 * @param array $messages
-	 * @param $level
+	 * @param string $level
 	 * @return mixed
 	 */
 	private function trigger($messages, $level){
