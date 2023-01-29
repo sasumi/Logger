@@ -16,7 +16,7 @@ class FileOutput extends CommonAbstract {
 	 * @param bool $separator_between_context insert blank line after each context
 	 */
 	public function __construct($log_file = null, $separator_between_context = true){
-		$log_file = $log_file ?: sys_get_temp_dir().'/logger.'.date('Ymd').'.log';
+		$log_file = $log_file ?: sys_get_temp_dir().'/logger/'.date('Ymd').'.log';
 		$this->separator_between_context = $separator_between_context;
 		$this->setFile($log_file);
 	}
