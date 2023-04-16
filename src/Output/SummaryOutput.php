@@ -82,7 +82,6 @@ class SummaryOutput extends CommonAbstract {
 	 * @param string $level
 	 * @param null $logger_id
 	 * @param null $trace_info
-	 * @return mixed|void
 	 */
 	public function output($messages, $level, $logger_id, $trace_info = null){
 		if(!$this->start_time){

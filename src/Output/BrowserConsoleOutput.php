@@ -2,9 +2,7 @@
 
 namespace LFPhp\Logger\Output;
 
-use LFPhp\Logger\Logger;
 use LFPhp\Logger\LoggerLevel;
-use function LFPhp\Func\escape;
 
 class BrowserConsoleOutput extends CommonAbstract {
 	protected static $level_map = [
@@ -26,7 +24,6 @@ class BrowserConsoleOutput extends CommonAbstract {
 			echo '<script>';
 			foreach($this->logs as list($level, $messages, $logger_id, $trace_info)){
 				$op = self::$level_map[$level];
-				$id_css = $cus_id_css;
 				$json = [json_encode('%c['.$logger_id.'] '), json_encode('color:#1ca54d; font-weight:bold;')];
 				foreach($messages as $msg){
 					$json[] = json_encode($msg, JSON_UNESCAPED_UNICODE);
