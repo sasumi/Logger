@@ -32,8 +32,9 @@ abstract class CommonAbstract {
 	 * @param array $trace_info
 	 * @return string
 	 */
-	public static function formatAsText($messages, $level, $logger_id, $trace_info = []){
-		$text = date('H:i:s m/d').($trace_info ? '' : ' '.$logger_id)." [$level] ".Logger::combineMessages($messages);
+	public static function formatAsText($messages, $level, $logger_id, $trace_info = [], $preset_time = false){
+		$text = ($preset_time ? date('H:i:s m/d').' ' : '').
+			($logger_id ? "$logger_id " : '')."[$level] ".Logger::combineMessages($messages);
 		if($trace_info){
 			$text .= ' '.CommonAbstract::printTraceInfo($trace_info, false, true);
 		}
@@ -42,7 +43,7 @@ abstract class CommonAbstract {
 
 	/**
 	 * output handler
-	 * @param mixed[] $messages
+	 * @param array $messages
 	 * @param string $level
 	 * @param string $logger_id
 	 * @param array $trace_info
@@ -52,7 +53,7 @@ abstract class CommonAbstract {
 
 	/**
 	 * output called as function
-	 * @param mixed[] $messages
+	 * @param array $messages
 	 * @param string $level
 	 * @param string $logger_id
 	 * @param array $trace_info
