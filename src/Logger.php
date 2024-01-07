@@ -96,7 +96,8 @@ class Logger {
 	public static function exception(Exception $exception, Logger $ins = null){
 		$ins = $ins ? $ins : self::instance();
 		$message = "[{$exception->getCode()}] {$exception->getMessage()}".PHP_EOL;
-		$message .= $exception->getFile().'#'.$exception->getLine();
+		$message .= $exception->getFile().'#'.$exception->getLine().PHP_EOL;
+		$message .= $exception->getTraceAsString();
 		$ins->trigger([$message], LoggerLevel::EXCEPTION);
 	}
 
