@@ -78,6 +78,8 @@ class FileOutput extends CommonAbstract {
 			$str .= ' '.$trace_info['file'].'#'.$trace_info['line'];
 		}
 		if(!$this->file_fp){
+			touch($this->file);
+			chmod($this->file, 0777);
 			$this->file_fp = fopen($this->file, 'a+');
 		}
 		fwrite($this->file_fp, $str.PHP_EOL);
