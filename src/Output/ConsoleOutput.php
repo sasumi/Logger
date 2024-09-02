@@ -10,9 +10,14 @@ use function LFPhp\Func\console_color;
  */
 class ConsoleOutput extends CommonAbstract {
 	private $colorless;
-	private $preset_time = true;
+	public $preset_time = true;
 
-	protected static $level_colors = [
+	/**
+	 * 不同级别颜色配置[level => [foreground color, background color], ...]
+	 * 颜色值定义可以在 console_color() 函数中参考
+	 * @var \string[][]
+	 */
+	public static $COLOR_MAP = [
 		LoggerLevel::DEBUG     => ['dark_gray'],
 		LoggerLevel::INFO      => ['white'],
 		LoggerLevel::WARNING   => ['yellow'],
@@ -43,7 +48,7 @@ class ConsoleOutput extends CommonAbstract {
 		$lv_str = strtoupper($level);
 		$str = self::formatAsText($messages, $lv_str, $logger_id, $trace_info, $this->preset_time);
 		if(!$this->colorless){
-			$str = console_color($str, self::$level_colors[$level][0], isset(self::$level_colors[$level][1]) ? self::$level_colors[$level][1] : null);
+			$str = console_color($str, self::$COLOR_MAP[$level][0], isset(self::$COLOR_MAP[$level][1]) ? self::$COLOR_MAP[$level][1] : null);
 		}
 		echo $str, PHP_EOL;
 	}
