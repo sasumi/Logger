@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dba0e90498deb5c3beb43261be5db72b",
+    "content-hash": "ad2ec3ac1855bf4f8e481af561fd9503",
     "packages": [
         {
             "name": "lfphp/func",
-            "version": "1.1.58",
+            "version": "1.3.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sasumi/Func.git",
-                "reference": "0d476612711998dfd2fec1216f53fbc985df35ef"
+                "reference": "c4fabe3d53f251588da7e3ae5718103c95376fa8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sasumi/Func/zipball/0d476612711998dfd2fec1216f53fbc985df35ef",
-                "reference": "0d476612711998dfd2fec1216f53fbc985df35ef",
+                "url": "https://api.github.com/repos/sasumi/Func/zipball/c4fabe3d53f251588da7e3ae5718103c95376fa8",
+                "reference": "c4fabe3d53f251588da7e3ae5718103c95376fa8",
                 "shasum": ""
             },
             "require": {
@@ -25,10 +25,11 @@
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "ext-pdo": "*",
-                "php": ">=5.6"
+                "php": ">=7.1"
             },
             "require-dev": {
-                "ext-ssh2": "*"
+                "ext-ssh2": "*",
+                "jasny/phpdoc-parser": "^1.0"
             },
             "type": "library",
             "autoload": {
@@ -40,6 +41,7 @@
                     "src/curl.php",
                     "src/db.php",
                     "src/env.php",
+                    "src/event.php",
                     "src/file.php",
                     "src/font.php",
                     "src/html.php",
@@ -69,9 +71,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sasumi/Func/issues",
-                "source": "https://github.com/sasumi/Func/tree/1.1.58"
+                "source": "https://github.com/sasumi/Func/tree/1.3.15"
             },
-            "time": "2024-01-04T08:11:49+00:00"
+            "time": "2024-09-22T23:32:18+00:00"
         }
     ],
     "packages-dev": [],

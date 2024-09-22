@@ -3,6 +3,7 @@
 namespace LFPhp\Logger\Output;
 
 use LFPhp\Logger\Logger;
+use function LFPhp\Func\console_color_clean;
 
 class FileOutput extends CommonAbstract {
 	private $file;
@@ -71,6 +72,7 @@ class FileOutput extends CommonAbstract {
 			$level,
 			Logger::combineMessages($messages),
 		], $this->format);
+		$str = console_color_clean($str);
 		$str = preg_replace_callback('/(%\w)/', function($matches){
 			return date(str_replace('%', '', $matches[1]));
 		}, $str);
