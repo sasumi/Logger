@@ -1,54 +1,54 @@
-# Logger 库
-> 当前库基于PHP5.6及以上环境测试。
+# Logger Library
+> The current library is tested based on PHP5.6 and above.
 
-## 代码引入
+## Install
 ```shell script
 composer require lfphp/logger
 ```
 
-## 方法调用
-库提供Logger方法进行简单日志记录收集。
-外部调用程序通过注册方法 ```Logger::register``` 进行事件处理注册。
-内部对象可使用对象方法 ```$logger->register``` 进行事件处理注册
+## Using
+The library provides Logger methods for simple log collection.
+External callers register event handlers through the registration method ```Logger::register```.
+Internal objects can use the object method ```$logger->register``` to register event handling
 
-例：
-> 业务代码：**business.php**
+example:
+> Business code: **business.php**
 ```php
 <?php
 use LFPhp\Logger\Logger;
 
 //Business start ...
 class MyClass {
-    private $logger;
+private $logger;
 	public function __construct(){
-        $this->logger = Logger::instance(__CLASS__);
+$this->logger = Logger::instance(__CLASS__);
 
-        //具体日志对象事件处理注册
-        $this->logger->register(function($messages){
-            echo "Log from internal";
-            var_dump($messages);
-            echo PHP_EOL;
-        });
+//Register specific log object event processing
+$this->logger->register(function($messages){
+echo "Log from internal";
+var_dump($messages);
+echo PHP_EOL;
+});
 
-        $this->logger->debug('class construct.'); //对象内日志记录        
+$this->logger->debug('class construct.'); //Logging in the object
 	}
 
-	public function foo(){
+	public function foo() {
 		$msg = "I'm calling foo()";
-		 $this->logger->info($msg); //对象内日志记录
+		$this->logger->info($msg); //Logging in the object
 		return $msg;
 	}
 
 	public function castError(){
-		 $this->logger->warning('warning, error happens'); //对象内日志记录
+		$this->logger->warning('warning, error happens'); //Logging in the object
 	}
 
 	public function __destruct(){
-		$this->logger->warning('class destruct.'); //对象内日志记录
+		$this->logger->warning('class destruct.'); //Logging in the object
 	}
 }
 
-//全局日志记录
+//Global logging
 Logger::debug('Global logging start...');
 
 $obj = new MyClass();
@@ -58,11 +58,11 @@ $obj->foo();
 $obj->castError();
 unset($obj);
 
-//全局日志记录
+//Global logging
 Logger::warning('Object destructed');
 ```
 
-> 业务调用、日志监听代码：**test.php**
+> Business call, log monitoring code: **test.php**
 ```php
 <?php
 use LFPhp\Logger\LoggerLevel;
@@ -73,24 +73,24 @@ use LFPhp\Logger\test\MyClass;
 
 require_once "autoload.php";
 
-//打印所有日志信息到控制台（屏幕）
+//Print all log information to the console (screen)
 Logger::registerGlobal(new ConsoleOutput, LoggerLevel::DEBUG);
 
-//记录等级大于或等于INFO的信息到文件
+//Record information with a level greater than or equal to INFO to the file
 Logger::registerGlobal(new FileOutput(__DIR__.'/log/Lite.debug.log'), LoggerLevel::INFO);
 
-//记录注册ID为Curl::class（一般使用类名作为注册ID）的所有日志信息到文件
+//Record all log information of the registration ID Curl::class (generally the class name is used as the registration ID) to the file
 Logger::registerGlobal(new FileOutput(__DIR__.'/log/Lite.curl.log'), LoggerLevel::DEBUG, MyClass::class);
 
-//仅在发生WARNING级别日志事件时记录所有等级大于或等于INFO的信息到文件
+//Only when a WARNING level log event occurs, log all information with a level greater than or equal to INFO to the file
 Logger::registerWhileGlobal(LoggerLevel::WARNING, new FileOutput(__DIR__.'/log/Lite.error.log'), LoggerLevel::INFO);
 
-//自行处理信息
+//Process the information yourself
 Logger::registerGlobal(function($messages, $level){
 	var_dump($messages);
-	//执行处理逻辑
+	//Execute processing logic
 }, LoggerLevel::INFO);
 
-//开始执行正常业务
+//Start normal business
 require_once "business.php";
 ```

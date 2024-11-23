@@ -94,7 +94,7 @@ class Logger {
 	 * @param \Exception $exception
 	 */
 	public static function exception(Exception $exception, Logger $ins = null){
-		$ins = $ins ? $ins : self::instance();
+		$ins = $ins ?: self::instance();
 		$message = "[{$exception->getCode()}] {$exception->getMessage()}".PHP_EOL;
 		$message .= $exception->getFile().'#'.$exception->getLine().PHP_EOL;
 		$message .= $exception->getTraceAsString();
@@ -195,14 +195,14 @@ class Logger {
 	private function trigger($messages, $level){
 		$trace_info = null;
 
-		//trace信息补全
+		//Patch trace info
 		if(in_array(true, array_column(self::$handlers, 3), true) ||
 			in_array(true, array_column(self::$while_handlers, 4), true)){
 			$tmp = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
 			$trace_info = $tmp[1];
 		}
 
-		//普通单次绑定事件触发
+		//Ordinary single binding event triggers
 		foreach(self::$handlers as list($handler, $collecting_level, $logger_id, $with_trace_info)){
 			$match_id = !$logger_id || (is_array($logger_id) && in_array($this->id, $logger_id)) || $logger_id === $this->id;
 			if($match_id && LoggerLevel::levelCompare($level, $collecting_level) >= 0){
@@ -212,7 +212,7 @@ class Logger {
 			}
 		}
 
-		//条件绑定事件触发
+		//Conditional binding event triggers
 		if(self::$while_handlers){
 			self::$log_dumps[] = [$messages, $level, $trace_info, $this->id];
 			foreach(self::$while_handlers as $k => list($trigger_level, $handler, $collecting_level, $logger_id, $with_trace_info, $last_occurs_index)){

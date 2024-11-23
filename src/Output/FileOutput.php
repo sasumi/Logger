@@ -7,7 +7,7 @@ use function LFPhp\Func\console_color_clean;
 
 class FileOutput extends CommonAbstract {
 	private $file;
-	private $separator_between_context = false;
+	private $separator_between_context;
 	private $file_fp;
 	private $format = '%H:%i:%s %m/%d {id} [{level}] {message}';
 

@@ -3,7 +3,7 @@
 namespace LFPhp\Logger;
 
 /**
- * Logger特性
+ * Logger Trait
  * @package LFPhp\Logger
  */
 trait LoggerTrait {
@@ -11,7 +11,7 @@ trait LoggerTrait {
 	protected static $__logger;
 
 	/**
-	 * 为当前class设置当前Logger
+	 * Set the Logger set for the current class
 	 * @param Logger $__logger
 	 */
 	public static function setLogger(Logger $__logger){
@@ -19,7 +19,7 @@ trait LoggerTrait {
 	}
 
 	/**
-	 * 获取为当前class设置的Logger
+	 * Get the Logger set for the current class
 	 * @return Logger
 	 */
 	public static function getLogger(){

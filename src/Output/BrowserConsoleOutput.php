@@ -32,7 +32,7 @@ class BrowserConsoleOutput extends CommonAbstract {
 					$callee = $trace_info['class'].$trace_info['type'].$trace_info['function'].'()';
 					$loc = $trace_info['file']."({$trace_info['line']})";
 					$json[] = json_encode("\n[Callee] $callee");
-					$json[] = json_encode("\n[Loc] {$loc}");
+					$json[] = json_encode("\n[Loc] $loc");
 				}
 				echo "console.{$op}(".join(",", $json).");", PHP_EOL;
 			}
