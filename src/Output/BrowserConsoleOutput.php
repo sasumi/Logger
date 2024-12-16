@@ -3,6 +3,8 @@
 namespace LFPhp\Logger\Output;
 
 use LFPhp\Logger\LoggerLevel;
+use function LFPhp\Func\http_from_json_request;
+use function LFPhp\Func\http_request_accept_json;
 
 class BrowserConsoleOutput extends CommonAbstract {
 	protected static $level_map = [
@@ -19,6 +21,11 @@ class BrowserConsoleOutput extends CommonAbstract {
 	public function __construct(){
 		register_shutdown_function(function(){
 			if(!$this->logs){
+				return;
+			}
+
+			//ignore json request or json response
+			if(http_from_json_request() || http_request_accept_json()){
 				return;
 			}
 			echo '<script>';
