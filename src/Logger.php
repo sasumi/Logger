@@ -11,6 +11,7 @@ use function LFPhp\Func\var_export_min;
  * @method static emergency (...$messages)
  * @method static alert (...$messages)
  * @method static critical (...$messages)
+ * @method static exception ($exception)
  * @method static error (...$messages)
  * @method static warning (...$messages)
  * @method static notice (...$messages)
@@ -85,20 +86,20 @@ class Logger {
 		}
 		$level = constant(LoggerLevel::class."::$method");
 		$ins = self::instance();
+		if($method === 'exception'){
+			return $ins->triggerException($params[0]);
+		}
 		return $ins->trigger($params, $level);
 	}
 
-	/**
-	 * log exception info
-	 * @param Logger $ins
-	 * @param \Exception $exception
-	 */
-	public static function exception(Exception $exception, Logger $ins = null){
-		$ins = $ins ?: self::instance();
-		$message = "[{$exception->getCode()}] {$exception->getMessage()}".PHP_EOL;
-		$message .= $exception->getFile().'#'.$exception->getLine().PHP_EOL;
-		$message .= $exception->getTraceAsString();
-		$ins->trigger([$message], LoggerLevel::EXCEPTION);
+	private function triggerException(Exception $exp){
+		$msg = "{$exp->getMessage()}({$exp->getCode()})".PHP_EOL;
+		$msg .= $exp->getFile().'#'.$exp->getLine().PHP_EOL;
+		if(method_exists($exp, 'getData')){
+			$msg .= '[DATA] '.json_encode($exp->getData(), JSON_UNESCAPED_UNICODE).PHP_EOL;
+		}
+		$msg .= $exp->getTraceAsString();
+		return $this->trigger([$msg], LoggerLevel::EXCEPTION);
 	}
 
 	/**
@@ -109,17 +110,14 @@ class Logger {
 	 * @throws \Exception
 	 */
 	public function __call($method, $params){
-		//specify handle logic for exception level
-		if($method === 'exception'){
-			list($exception) = $params;
-			return call_user_func('self::exception', $exception, $this);
-		}
-
 		$method = strtoupper($method);
 		if(!defined(LoggerLevel::class."::$method")){
 			throw new LoggerException("Logger level no exists:".$method);
 		}
 		$level = constant(LoggerLevel::class."::$method");
+		if($level === LoggerLevel::EXCEPTION){
+			return $this->triggerException($params[0]);
+		}
 		return $this->trigger($params, $level);
 	}
 
@@ -196,8 +194,7 @@ class Logger {
 		$trace_info = null;
 
 		//Patch trace info
-		if(in_array(true, array_column(self::$handlers, 3), true) ||
-			in_array(true, array_column(self::$while_handlers, 4), true)){
+		if(in_array(true, array_column(self::$handlers, 3), true) || in_array(true, array_column(self::$while_handlers, 4), true)){
 			$tmp = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
 			$trace_info = $tmp[1];
 		}

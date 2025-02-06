@@ -6,6 +6,7 @@ use LFPhp\Logger\Output\ConsoleOutput;
 use LFPhp\Logger\Output\FileOutput;
 use LFPhp\Logger\Logger;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TextUI\XmlConfiguration\File;
 use function LFPhp\Func\dump;
 
 class LoggerTest extends TestCase {
@@ -54,5 +55,16 @@ class LoggerTest extends TestCase {
 		$obj->castWarning();
 		$obj->castError();
 		unset($obj);
+	}
+
+	public function testExceptionLogger(){
+		$exp = new \Exception('exception message');
+		$logger = Logger::instance();
+
+		$log = __DIR__.'/exp.log';
+		$logger->registerWhile(LoggerLevel::EXCEPTION, new FileOutput($log));
+
+		$logger->exception($exp);
+		$this->assertFileExists($log);
 	}
 }
